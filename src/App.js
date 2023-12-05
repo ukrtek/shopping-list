@@ -1,10 +1,21 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import 'bulma/css/bulma.min.css';
 import ItemAdd from './components/ItemAdd.js';
 import ItemList from './components/ItemList.js';
 
 function App() {
 	const [items, setItems] = useState([]);
+
+  useEffect(() => {
+    const savedItems = JSON.parse(localStorage.getItem('shoppingList'));
+    if (savedItems) {
+      setItems(savedItems);
+    }
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem('shoppingList', JSON.stringify(items));
+  }, [items]);
 
 	const addItem = (item) => {
 		setItems([...items, item]);
