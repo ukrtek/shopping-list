@@ -1,0 +1,7 @@
+/* ItemList.css */
+.item-list li {
+  margin-bottom: 10px;
+  padding: 10px;
+  background-color: #f5f5f5;
+  border-radius: 5px;
+}

@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import 'bulma/css/bulma.min.css';
 import ItemAdd from './components/ItemAdd.js';
 import ItemList from './components/ItemList.js';
 
@@ -16,11 +17,13 @@ function App() {
   };
 
   return (
-    <div>
-      <h1>Shopping List</h1>
-			<ItemAdd onAddItem={addItem} />
-      <ItemList items={items} onRemoveItem={removeItem} />
-    </div>
+    <section className="section">
+      <div className="container">
+        <h1 className="title">Shopping List</h1>
+        <ItemAdd onAddItem={addItem} />
+        <ItemList items={items} onRemoveItem={removeItem} />
+      </div>
+    </section>
   );
 }
 
