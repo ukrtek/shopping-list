@@ -1,17 +1,32 @@
 import React, { useState } from 'react';
+import { addItem, fetchSuggestions } from '../api.js';
 
 function ItemAdd({ onAddItem }) {
-  const [newItem, setNewItem] = useState('');
+  const [itemName, setItemName] = useState('');
+  const [suggestions, setSuggestions] = useState([]);
 
   const handleChange = (event) => {
-    setNewItem(event.target.value);
-  }
+    const value = event.target.value;
+    setItemName(value);
+
+    if (value.length > 1) {
+      fetchSuggestions(value).then(data => {
+        setSuggestions(data);
+      });
+    } else {
+      setSuggestions([]);
+      }
+    };
+
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    if (newItem.trim() !== '') {
-      onAddItem(newItem);
-      setNewItem('');
+    if (itemName.trim() !== '') {
+      addItem(itemName)
+      .then(newItem => {
+        onAddItem(itemName);
+        setItemName('');
+      });
     }
   }
 
@@ -23,7 +38,7 @@ function ItemAdd({ onAddItem }) {
             <input 
               className="input" 
               type="text" 
-              value={newItem} 
+              value={itemName} 
               onChange={handleChange} 
               placeholder="Add new item"
             />
@@ -32,6 +47,13 @@ function ItemAdd({ onAddItem }) {
             <button className="button is-primary">Add Item</button>
           </div>
         </div>
+        <ul className="suggestions">
+          {suggestions.map(item => (
+            <li key={item._id} onClick={() => setItemName(item.name)}>
+              {item.name}
+            </li>
+          ))}
+        </ul>
       </form>
     </div>
   );  
