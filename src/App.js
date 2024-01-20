@@ -1,40 +1,47 @@
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import ListView from './components/ListView.js';
 import React, { useEffect, useState } from 'react';
 import 'bulma/css/bulma.min.css';
-import ItemAdd from './components/ItemAdd.js';
-import ItemList from './components/ItemList.js';
+import Sidebar from './components/Sidebar.js';
 
 function App() {
-	const [items, setItems] = useState([]);
+  const [lists, setLists] = useState([]);
 
   useEffect(() => {
-    const savedItems = JSON.parse(localStorage.getItem('shoppingList'));
-    if (savedItems) {
-      setItems(savedItems);
-    }
+    // Fetch the lists from your API
+    fetch('/api/lists')
+      .then(response => response.json())
+      .then(data => setLists(data))
+      .catch(err => console.error(err));
   }, []);
 
-  useEffect(() => {
-    localStorage.setItem('shoppingList', JSON.stringify(items));
-  }, [items]);
-
-	const addItem = (item) => {
-		setItems([...items, item]);
-	};
-
-  const removeItem = (index) => {
-    // _ here is a convention to indicate that we are ignoring the value
-    // filter() takes two arguments: the current item and the index
-    setItems(items.filter((_, i) => i !== index));
+  const onDragEnd = (result) => {
+    const { source, destination } = result;
+  
+    if (!destination) return;
+  
+    const newItems = Array.from(items);
+    const [reorderedItem] = newItems.splice(source.index, 1);
+    newItems.splice(destination.index, 0, reorderedItem);
+  
+    setItems(newItems);
+    // Optionally update the backend
   };
+  
 
   return (
-    <section className="section">
-      <div className="container">
-        <h1 className="title">Shopping List</h1>
-        <ItemAdd onAddItem={addItem} />
-        <ItemList items={items} onRemoveItem={removeItem} />
-      </div>
-    </section>
+    <Router>
+      <section className="section">
+        <div className="container">
+          <h1 className="title">Shopping List</h1>
+        </div>
+      </section>
+      {/* other components like Sidebar, Navbar, etc. */}
+      <Routes>
+        <Route path="/lists/:id" element={<ListView />} />
+        {/* Define other routes here */}
+      </Routes>
+    </Router>
   );
 }
 
