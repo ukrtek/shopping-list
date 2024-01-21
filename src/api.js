@@ -1,5 +1,27 @@
 const API_URL = 'http://localhost:3001/api';
 
+// fetch all lists
+export const fetchLists = () => {
+  return fetch(`${API_URL}/lists`)
+    .then(response => response.json());
+};
+
+// fetch one list by id
+export const fetchList = (id) => {
+  return fetch(`${API_URL}/lists/${id}`)
+    .then(response => response.json());
+};
+
+// add a new list
+
+// delete a list
+
+// add an item to a list
+
+// delete an item from a list
+
+// rename a list
+
 // get all items; export here means we can import this function in other files
 export const fetchItems = () => {
   return fetch(`${API_URL}/items`)
