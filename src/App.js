@@ -1,9 +1,8 @@
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import ListView from './components/ListView.js';
 import React, { useEffect, useState } from 'react';
-import 'bulma/css/bulma.min.css';
+import { Layout } from 'antd';
 import { fetchLists } from './api.js';
-import Sidebar from './components/Sidebar.js';
+import './App.css';
+const { Header, Sider, Content, Footer } = Layout;
 
 function App() {
   const [lists, setLists] = useState([]);
@@ -15,15 +14,28 @@ function App() {
   }, []);
 
   return (
-    <div>
-      <section className="section">
-        <div className="container">
-          <h1 className="title">Shopping List</h1>
-        </div>
-      </section>
-      <Sidebar lists={lists} />
-    </div>
+    <Layout className="layout">
+      <Header className='header'>header!</Header>
 
+      <Layout className='main'>
+        <Sider className='ant-layout-sider'>
+          <ul className='list-of-lists'>
+            <li>New List</li>
+            <li>New List</li>
+            <li>New List</li>
+          </ul>
+        </Sider>
+
+        <Content className='content'>
+          <ul className='list'>
+            <li>item</li>
+            <li>item</li>
+            <li>item</li>
+          </ul>
+        </Content>
+      </Layout>
+      <Footer className='footer'>footer</Footer>
+    </Layout>
   );
 }
 
