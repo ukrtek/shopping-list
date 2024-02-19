@@ -8,7 +8,7 @@ function ItemAdd({ onAddItem }) {
   const handleChange = (event) => {
     const value = event.target.value;
     setItemName(value);
-
+    
     if (value.length > 1) {
       fetchSuggestions(value).then(data => {
         setSuggestions(data);

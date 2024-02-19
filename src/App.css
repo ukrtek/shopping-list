@@ -1,5 +1,14 @@
+html, body {
+  margin: 0;
+  padding: 0;
+}
+
 /* App.css */
 .layout {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  margin: 0;
   /* Full height layout */
 }
 
@@ -12,7 +21,6 @@
 
 .main {
   /* Set the main content area */
-  padding: 20px;
   min-height: 30em;
 }
 
@@ -20,12 +28,13 @@
   background-color: #d21313; /* Example to change background color */
 }
 
-.list-of-lists {
-  /* Styles for the list of lists */
+.sidebar * {
   color: #f1f1f1;
+
 }
 
+
 .content {
-  padding: 20px;
+  flex: 1;
   background-color: #fff;
 }

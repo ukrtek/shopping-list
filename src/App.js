@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Layout } from 'antd';
 import { fetchLists } from './api.js';
 import './App.css';
+import Sidebar from './components/Sidebar.js';
 const { Header, Sider, Content, Footer } = Layout;
 
 function App() {
@@ -19,11 +20,7 @@ function App() {
 
       <Layout className='main'>
         <Sider className='ant-layout-sider'>
-          <ul className='list-of-lists'>
-            <li>New List</li>
-            <li>New List</li>
-            <li>New List</li>
-          </ul>
+          <Sidebar lists={lists} />
         </Sider>
 
         <Content className='content'>
