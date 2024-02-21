@@ -1,12 +1,14 @@
+import ListView from './components/ListView.js';
+import Sidebar from './components/Sidebar.js';
 import React, { useEffect, useState } from 'react';
 import { Layout } from 'antd';
-import { fetchLists } from './api.js';
+import { fetchLists, fetchList } from './api.js';
 import './App.css';
-import Sidebar from './components/Sidebar.js';
 const { Header, Sider, Content, Footer } = Layout;
 
 function App() {
   const [lists, setLists] = useState([]);
+  const [selectedList, setSelectedList] = useState(null);
 
   useEffect(() => {
     fetchLists()
@@ -14,21 +16,26 @@ function App() {
       .catch(err => console.error(err));
   }, []);
 
+  const handleListSelect = async (listId) => {
+    try {
+      const data = await fetchList(listId); // Use the imported fetchList function
+      setSelectedList(data);
+    } catch (err) {
+      console.error('Error fetching list: ', err);
+    }
+  };
+
   return (
     <Layout className="layout">
       <Header className='header'>header!</Header>
 
       <Layout className='main'>
         <Sider className='ant-layout-sider'>
-          <Sidebar lists={lists} />
+          <Sidebar lists={lists} onListSelect={handleListSelect}/>
         </Sider>
 
         <Content className='content'>
-          <ul className='list'>
-            <li>item</li>
-            <li>item</li>
-            <li>item</li>
-          </ul>
+          {selectedList && <ListView list={selectedList} />}
         </Content>
       </Layout>
       <Footer className='footer'>footer</Footer>
