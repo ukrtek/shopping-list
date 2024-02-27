@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import { addItem, fetchSuggestions } from '../api.js';
+import { addItemToList, fetchSuggestions } from '../api.js';
 
-function ItemAdd({ onAddItem }) {
+function ItemAdd({ selectedList, setSelectedList }) {
   const [itemName, setItemName] = useState('');
   const [suggestions, setSuggestions] = useState([]);
 
@@ -18,17 +18,31 @@ function ItemAdd({ onAddItem }) {
       }
     };
 
+    const [error, setError] = useState('');
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    if (itemName.trim() !== '') {
-      addItem(itemName)
-      .then(newItem => {
-        onAddItem(itemName);
+    const handleSubmit = async (event) => {
+      event.preventDefault();
+  
+      if (!itemName.trim()) {
+        setError('Item name cannot be empty.');
+        return;
+      }
+    
+      setError('');
+    
+      try {
+        const newItem = await addItemToList(selectedList._id, itemName);
         setItemName('');
-      });
-    }
-  }
+
+        setSelectedList(prevList => ({
+          ...prevList,
+          items: [...prevList.items, newItem],
+        }));
+      } catch (error) {
+        console.error('Error adding item to list: ', error);
+      }
+    };
+    
 
   return (
     <div className="item-add mb-4">
@@ -36,12 +50,14 @@ function ItemAdd({ onAddItem }) {
         <div className="field has-addons">
           <div className="control is-expanded">
             <input 
+              id='item-name-input'
               className="input" 
               type="text" 
               value={itemName} 
               onChange={handleChange} 
               placeholder="Add new item"
             />
+            {error && <p className="error-message">{error}</p>}
           </div>
           <div className="control">
             <button className="button is-primary">Add Item</button>
@@ -58,26 +74,6 @@ function ItemAdd({ onAddItem }) {
     </div>
   );  
 
-  // return (
-  //   <div className="item-add">
-  //     <form onSubmit={handleSubmit}>
-  //       <div className="field">
-  //       <div className="control">
-  //         <input 
-  //           className="input" 
-  //           type="text"
-  //           value={newItem} 
-  //           onChange={handleChange}
-  //           placeholder='Add new item'
-  //         />
-  //       </div>
-  //       </div>
-  //     <div className="control">
-  //       <button className="button">Add Item</button>
-  //     </div>
-  //     </form>
-  //   </div>
-  // );
 }
 
 export default ItemAdd;

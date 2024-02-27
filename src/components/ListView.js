@@ -1,7 +1,8 @@
 import React from 'react';
 
 function ListView({ list }) {
-  if (!list) {
+  
+  if (!list || !list.items) {
     return <div>Loading...</div>;
   }
 
@@ -10,7 +11,7 @@ function ListView({ list }) {
       <h2>{list.name}</h2>
       <ul>
         {list.items.map(item => (
-          <li key={item._id}>{item.name} - Quantity: {item.quantity}</li> 
+          <li key={item._id}>{item.name}</li>
         ))}
       </ul>
     </div>
