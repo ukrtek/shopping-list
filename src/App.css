@@ -78,12 +78,13 @@ html, body {
 
 .content {
   flex: 1;
-  background-color: #eceedf;
+  background-color: #CCD5AE;
 }
 
 /* Content */
 .ant-layout-content {
-  background-color: #ffffff; /* Background color */
+  flex:1;
+  background-color: #d5d6d1; /* Background color */
   color: #333333; /* Text color */
   font-size: 16px; /* Font size */
   padding: 20px; /* Padding */
