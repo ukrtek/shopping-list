@@ -31,7 +31,7 @@ export const deleteList = (id) => {
   }).then(response => response.json());
 };
 
-// add an item to a list: returns item
+// add an item to a list: returns item in json format
 export const addItemToList = async (listId, itemName) => {
   const response = await fetch(`${API_URL}/lists/${listId}/items`, {
     method: 'POST',

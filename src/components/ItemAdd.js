@@ -4,57 +4,64 @@ import { addItemToList, fetchSuggestions } from '../api.js';
 function ItemAdd({ selectedList, setSelectedList }) {
   const [itemName, setItemName] = useState('');
   const [suggestions, setSuggestions] = useState([]);
+  const [timeoutId, setTimeoutId] = useState(null);
+
 
   const handleChange = (event) => {
     const value = event.target.value;
     setItemName(value);
-    
-    if (value.length > 1) {
-      fetchSuggestions(value).then(data => {
-        setSuggestions(data);
-      });
+
+    if (timeoutId) clearTimeout(timeoutId);
+
+    if (value.length >= 3) {
+      const newTimeoutId = setTimeout(() => {
+        fetchSuggestions(value).then(data => {
+          setSuggestions(data);
+        });
+      }, 750);
+      setTimeoutId(newTimeoutId);
     } else {
       setSuggestions([]);
-      }
-    };
+    }
+  };
 
-    const [error, setError] = useState('');
+  const [error, setError] = useState('');
 
-    const handleSubmit = async (event) => {
-      event.preventDefault();
-  
-      if (!itemName.trim()) {
-        setError('Item name cannot be empty.');
-        return;
-      }
-    
-      setError('');
-    
-      try {
-        const newItem = await addItemToList(selectedList._id, itemName);
-        setItemName('');
+  const handleSubmit = async (event) => {
+    event.preventDefault();
 
-        setSelectedList(prevList => ({
-          ...prevList,
-          items: [...prevList.items, newItem],
-        }));
-      } catch (error) {
-        console.error('Error adding item to list: ', error);
-      }
-    };
-    
+    if (!itemName.trim()) {
+      setError('Item name cannot be empty.');
+      return;
+    }
+
+    setError('');
+
+    try {
+      const newItem = await addItemToList(selectedList._id, itemName);
+      setItemName('');
+
+      setSelectedList(prevList => ({
+        ...prevList,
+        items: [...prevList.items, newItem],
+      }));
+    } catch (error) {
+      console.error('Error adding item to list: ', error);
+    }
+  };
+
 
   return (
     <div className="item-add mb-4">
       <form onSubmit={handleSubmit}>
         <div className="field has-addons">
           <div className="control is-expanded">
-            <input 
+            <input
               id='item-name-input'
-              className="input" 
-              type="text" 
-              value={itemName} 
-              onChange={handleChange} 
+              className="input"
+              type="text"
+              value={itemName}
+              onChange={handleChange}
               placeholder="Add new item"
             />
             {error && <p className="error-message">{error}</p>}
@@ -72,8 +79,7 @@ function ItemAdd({ selectedList, setSelectedList }) {
         </ul>
       </form>
     </div>
-  );  
-
+  );
 }
 
 export default ItemAdd;
