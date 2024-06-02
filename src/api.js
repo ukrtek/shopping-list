@@ -11,8 +11,10 @@ export const fetchLists = () => {
 };
 
 // fetch one list by id
-export const fetchList = (id) => {
-  return fetch(`${API_URL}/lists/${id}`).then((response) => response.json());
+export const fetchList = (listId) => {
+  return fetch(`${API_URL}/lists/${listId}`).then((response) =>
+    response.json()
+  );
 };
 
 // add a new list
@@ -95,7 +97,7 @@ export const deleteItem = (id) => {
 };
 
 export const fetchSuggestions = (searchTerm) => {
-  return fetch(`http://localhost:3001/api/items/search?q=${searchTerm}`).then(
-    (response) => response.json()
+  return fetch(`${API_URL}/items/search?q=${searchTerm}`).then((response) =>
+    response.json()
   );
 };

@@ -1,6 +1,8 @@
 import React from "react";
 
 function Sidebar({ lists, onListSelect, loading, error }) {
+  console.log("Sidebar lists prop:", lists);
+
   if (loading) {
     return <div>Loading...</div>;
   }
@@ -17,11 +19,14 @@ function Sidebar({ lists, onListSelect, loading, error }) {
     <div className="sidebar">
       <h3>My Lists</h3>
       <ul className="list-of-lists">
-        {lists.map((list) => (
-          <li key={list._id} onClick={() => onListSelect(list._id)}>
-            {list.name}
-          </li>
-        ))}
+        {lists.map((list) => {
+          console.log("List object:", list);
+          return (
+            <li key={list.listId} onClick={() => onListSelect(list.listId)}>
+              {list.title}
+            </li>
+          );
+        })}
       </ul>
     </div>
   );

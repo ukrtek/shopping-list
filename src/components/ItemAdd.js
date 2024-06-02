@@ -36,7 +36,7 @@ function ItemAdd({ selectedList, setSelectedList }) {
     setError("");
 
     try {
-      const newItem = await addItemToList(selectedList._id, itemName);
+      const newItem = await addItemToList(selectedList.listId, itemName);
       setItemName("");
 
       setSelectedList((prevList) => {
