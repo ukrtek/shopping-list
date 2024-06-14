@@ -5,7 +5,6 @@ export const fetchLists = () => {
   return fetch(`${API_URL}/lists`)
     .then((response) => response.json())
     .then((data) => {
-      console.log("Fetched lists data:", data);
       return data;
     });
 };
@@ -42,8 +41,9 @@ export const addItemToList = async (listId, itemName) => {
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({ name: itemName }),
+    body: JSON.stringify({ name: itemName, quantity: 1 }),
   });
+
   if (!response.ok) {
     throw new Error("Failed to add item to list");
   }

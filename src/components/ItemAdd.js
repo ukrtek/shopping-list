@@ -36,21 +36,35 @@ function ItemAdd({ selectedList, setSelectedList }) {
     setError("");
 
     try {
+      if (!selectedList || !selectedList.listId) {
+        setError("No list selected.");
+        return;
+      }
+
       const newItem = await addItemToList(selectedList.listId, itemName);
+
       setItemName("");
 
       setSelectedList((prevList) => {
-        const items = prevList.items.some((item) => item._id === newItem._id)
+        console.log("Previous list:", prevList);
+
+        const items = prevList.items.some(
+          (item) => item.itemId === newItem.itemId
+        )
           ? prevList.items
           : [...prevList.items, newItem];
 
-        return {
+        const updatedList = {
           ...prevList,
           items,
         };
+
+        console.log("Updated list:", updatedList);
+        return updatedList;
       });
     } catch (error) {
       console.error("Error adding item to list ", error);
+      setError("Failed to add item to list");
     }
   };
 
@@ -75,7 +89,10 @@ function ItemAdd({ selectedList, setSelectedList }) {
         </div>
         <ul className="suggestions">
           {suggestions.map((item) => (
-            <li key={item._id} onClick={() => setItemName(item.name)}>
+            <li
+              key={item.itemId || item._id}
+              onClick={() => setItemName(item.name)}
+            >
               {item.name}
             </li>
           ))}

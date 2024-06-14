@@ -17,7 +17,6 @@ function App() {
   useEffect(() => {
     fetchLists()
       .then((data) => {
-        console.log("Fetched lists:", data);
         if (Array.isArray(data)) {
           setLists(data);
           if (data.length > 0) {
